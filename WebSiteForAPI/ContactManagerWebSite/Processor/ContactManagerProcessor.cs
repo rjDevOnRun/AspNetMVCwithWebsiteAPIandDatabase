@@ -18,5 +18,10 @@ namespace ContactManagerWebSite.Processor
 
         }
 
+        public static List<Contact> GetAllContacts()
+        {
+            return ContactManagerRepository.GetContacts();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -17,14 +18,9 @@ namespace WebService.Repositories
 
             // Get Connection String to DB
             var connectionString = ConfigurationManager.ConnectionStrings["ContactManagerDB"].ToString();
-            //var connectionString = $"Data Source=RJDELL; Initial Catalog = ContactManager; Integrated Security = True";
 
             // Build an Insert Query (with parameters)
             var sqlQuery = $"INSERT INTO ContactList (Name, PhoneNumber, Note) VALUES (@Name, @PhoneNumber, @Note)";
-
-            //sqlQuery = sqlQuery .Replace("@Name", contact.Name)
-            //                    .Replace("@PhoneNumber", contact.PhoneNumber)
-            //                    .Replace("@Note", contact.Note);
 
             // Init
             SqlConnection sqlConnection = null;
@@ -58,5 +54,46 @@ namespace WebService.Repositories
             }
 
         }
+
+        internal static DataTable GetContactsFromDatabase()
+        {
+            // Get Connection String to DB
+            var connectionString = ConfigurationManager.ConnectionStrings["ContactManagerDB"].ToString();
+
+            // Build an Insert Query (with parameters)
+            var sqlQuery = $"SELECT * FROM ContactList";
+
+            // Init
+            SqlConnection sqlConnection = null;
+            DataTable dt = new DataTable();
+            try
+            {
+                // Establish connection (will dispose automatically)
+                using (sqlConnection = new SqlConnection(connectionString))
+                {
+                    // Open connection
+                    sqlConnection.Open();
+
+                    // Init Command
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+
+                    // Execute the Query
+                    IDataReader dr = sqlCommand.ExecuteReader();
+
+                    
+                    dt.Load(dr, LoadOption.OverwriteChanges);
+                    dr.Close();
+
+                }
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message + ex.StackTrace);
+                return dt;
+            }
+        }
+
+        
     }
 }

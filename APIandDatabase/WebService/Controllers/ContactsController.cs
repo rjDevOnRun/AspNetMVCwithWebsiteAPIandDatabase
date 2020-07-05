@@ -23,18 +23,18 @@ namespace WebService.Controllers
         }
 
 
+        // GET: List of Contacts
+        [Route("GetContactsInDB")]
+        public List<Contact> GetContactInDatabase()
+        {
+            return ContactProcessor.GetContacts();
+        }
 
-        //// GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET api/values/5
+        public string Get(int id)
+        {
+            return "value";
+        }
 
 
         //// PUT api/values/5

@@ -83,11 +83,13 @@ namespace ContactManagerWebSite.Controllers
         //    return View();
         //}
 
-        //public ActionResult Contact()
-        //{
-        //    ViewBag.Message = "Your contact page.";
+        public ActionResult ViewContact()
+        {
+            ViewBag.Message = "Contacts ";
 
-        //    return View();
-        //}
+            List<Contact> contacts = ContactManagerProcessor.GetAllContacts();
+
+            return View(contacts);
+        }
     }
 }
